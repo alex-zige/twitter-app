@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Hide your kids, hide your wife and hide your husbands</title>
+</head>
+
+<body>
+
+<div id="content-pane">No content loaded</div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+<script src="http://ajax.cdnjs.com/ajax/libs/underscore.js/1.1.4/underscore-min.js"></script>
+<script src="http://ajax.cdnjs.com/ajax/libs/backbone.js/0.3.3/backbone-min.js"></script>
+
+<script type="text/javascript">
+(function ($) {
+	
+	var restfulApp = Backbone.Controller.extend({
+	
+		restfulUrl: "http://twitter.dev/dev/api/twitter/galaxy_watcher", //This is a free service to store key pair values
+		
+		//Routes tell the app what to do 
+		routes: {
+		"":                 	"defaultAction"//This simply matches any urls that weren't caught above and assigns it to "page"
+		},
+		
+		defaultAction: function (){
+
+				this.loadRestfulData( this.restfulUrl );
+			
+		},
+		loadRestfulData: function( pageUrl ){
+			//Set the content pane to a loading screen
+			$("#content-pane").text( "fetching your data..." );
+
+			//Load the data in using jQuerys ajax call
+			$.ajax({
+				url: pageUrl,
+				dataType: "json",
+				success: function(data){
+					//Once we receive the data, set it to the content pane.
+					console.log(data);
+
+					console.log(data.length);
+
+					$("#content-pane").text( "Your Latest unfollowers are :" );
+
+					for (var i = 0; i < data.length; i++) {
+
+					console.log(data[i]);
+
+					var html = "<li><a href='http://twitter.com/#!/"+data[i].screen_name+"' target='_blank'><img src="+data[i].profile_image_url+" /><storng>"+data[i].name+"</strong><p>"+data[i].description+"</p></li><br/>";
+
+					$("#content-pane").append(html);
+					
+					};
+
+				}
+			});	
+		}
+	});
+	var app = new restfulApp;
+	//Initiate a new history and controller class
+	Backbone.emulateHTTP = true;
+	Backbone.emulateJSON = true 
+	Backbone.history.start();
+
+})(jQuery);
+
+</script>
+</body>
+</html>
+
