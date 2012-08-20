@@ -1,56 +1,159 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
 <head>
-<title>Backbone Cellar</title>
+
+	<title>Your Twitter unfollowers </title>
+	<meta charset='utf-8'>
+<link rel="stylesheet" type="text/css" href="css/style.css" >
+
 </head>
 
 <body>
-
-<div id="header"><span class="title">Backbone Cellar</span></div>
-
-<div id="sidebar"></div>
-
-<div id="content">
-<h2>Welcome to Backbone Cellar -test</h2>
-<p>
-This is a sample application part of of three-part tutorial showing how to build a CRUD application with Backbone.js.
-</p>
+<div class="topbar js-topbar">
+      <div class="global-nav" data-section-term="top_nav">
+        <div class="global-nav-inner">
+          <div class="container">
+            <ul class="nav js-global-actions">
+              <li class="home">
+                <a class="nav-logo-link" href="//twitter.com">
+                  <i class="bird-topbar-blue"></i>
+                </a>
+              </li>
+            </ul>
+            <div class="pull-right">
+              <ul class="nav secondary-nav">
+                <li><a href="//twitter.com" id="homeLink">Home →</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
 </div>
 
-<!-- Templates -->
-<script type="text/template" id="tpl-wine-list-item">
-    <a href='#wines/<%= id %>'><%= name %></a>
+<div class="body-content">
+<h1>Twitter Unfollowers Search</h1>
+<p>find out your unfollowers in a second.</p>
+
+<div class="search">
+
+<input id="twitter_username" type="text" placeholder="Search for a full name, or @username" name="q">
+
+<input id="search_submit" class="btn" type="submit" value="Search">
+
+</div>
+
+
+	<div class="result">
+
+	<div id="content-pane"></div>
+
+	</div>
+
+<div class="footer">
+<ul class="links">
+<li class="first">©2012 NovaInspire</li>
+<li><a href="about">About us</a></li>
+<li><a href="help">Help</a></li>
+<li><a href="contact">Contact</a></li>
+
+</ul>
+</div>
+</div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+<script src="http://ajax.cdnjs.com/ajax/libs/underscore.js/1.1.4/underscore-min.js"></script>
+<script src="http://ajax.cdnjs.com/ajax/libs/backbone.js/0.3.3/backbone-min.js"></script>
+
+<script type="text/javascript">
+
+(function ($) {
+
+	var SearchView = Backbone.View.extend({
+
+		el:$('body'),
+		events:{
+ 		'click input#search_submit': 'check'
+		},
+
+	 initialize: function(){
+      _.bindAll(this, 'render', 'check'); // every function that uses 'this' as the current object should be in here
+      this.counter = 0; // total number of items added thus far
+      this.render(); 
+    },
+      render: function(){
+
+    },  
+    check: function(){
+
+    	twitter_name = $('#twitter_username').val();
+
+		//passing value to controller;
+		this.loadRestfulData("http://twitter.dev/dev/api/twitter/"+twitter_name);
+
+    },	
+    loadRestfulData: function(api){
+
+			//Set the content pane to a loading screen
+			$("#content-pane").text( "fetching your data..." );
+
+			//Load the data in using jQuerys ajax call
+			$.ajax({
+				url: api,
+				dataType: "json",
+				success: function(data){
+
+					if (data!== null){
+
+					//Once we receive the data, set it to the content pane.
+					//console.log(data.length);
+
+					$("#content-pane").text( "Your Latest unfollowers are :" );
+
+						for (var i = 0; i < data.length; i++) {
+					
+						var html = "<li><a href='http://twitter.com/#!/"+data[i].screen_name+"' target='_blank'><img src="+data[i].profile_image_url+" /><storng>"+data[i].name+"</strong><p>"+data[i].description+"</p></li><br/>";
+
+						$("#content-pane").append(html);
+
+						}
+						
+					}else{
+					
+						var html="You are lucky, you have no unfollowers these between your lastest check.";
+						$("#content-pane").text(html);
+
+					};
+
+				}
+			});	
+		},
+
+		focusin:function(el){
+
+			if(el.target.value != ""){
+
+			$("#twitter_username").val("");
+
+			}
+
+ 	},
+ 	blur:function(el){
+
+			if(el.target.value == ""){
+
+			$("#twitter_username").val(el.target.defaultValue);
+
+				}
+
+
+ 	},
+	});
+
+ 	var SearchView = new SearchView();      
+
+
+})(jQuery);
+
 </script>
-
-<script type="text/template" id="tpl-wine-details">
-    <div class="form-left-col">
-        <label>Id:</label>
-        <input type="text" id="wineId" name="id" value="<%= id %>" disabled />
-        <label>Name:</label>
-        <input type="text" id="name" name="name" value="<%= name %>" required/>
-        <label>Grapes:</label>
-        <input type="text" id="grapes" name="grapes" value="<%= grapes %>"/>
-        <label>Country:</label>
-        <input type="text" id="country" name="country" value="<%= country %>"/>
-        <label>Region:</label>
-        <input type="text" id="region" name="region"  value="<%= region %>"/>
-        <label>Year:</label>
-        <input type="text" id="year" name="year"  value="<%= year %>"/>
-    </div>
-    <div class="form-right-col">
-        <img height="300" src="../pics/<%= picture %>"/>
-        <label>Notes:</label>
-        <textarea id="description" name="description"><%= description %></textarea>
-    </div>
-</script>
-
-<!-- JavaScript -->
-<script type="text/javascript" src="js/libs/jquery.js"></script>
-<script type="text/javascript" src="js/libs/underscore.js"></script>
-<script type="text/javascript" src="js/libs/backbone.js"></script><!-- 
-<script type="text/javascript" src="js/utils.js"></script>
-<script type="text/javascript" src="js/views/about.js"></script> -->
-<script type="text/javascript" src="js/script.js"></script>
-
 </body>
 </html>
+

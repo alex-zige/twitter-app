@@ -23,7 +23,7 @@
     }
     final class DB extends Database_Object
     {
-        public static function Open($database = 'twitter', $hostname = 'localhost', $username = 'root', $password = '')
+        public static function Open($database = 'twitter', $hostname = 'localhost', $username = 'root', $password = 'root')
         {   
 
             if (!self::$DB_Open)

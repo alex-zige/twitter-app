@@ -18,6 +18,7 @@ window.utils = {
         $.when.apply(null, deferreds).done(callback);
     },
 
+
     uploadFile: function (file, callbackSuccess) {
         var self = this;
         var data = new FormData();

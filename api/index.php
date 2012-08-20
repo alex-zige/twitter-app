@@ -23,6 +23,7 @@ $app->get('/', function () {
 <!DOCTYPE html>
     <html>
      <head> API center </head>
+     <meta charset='utf-8'>
         <body>
             <header></header>
             <h1>Twitter unfollowers</h1>           
@@ -53,8 +54,16 @@ $app->get('/twitter/:twitter_name', 'getFollowers');
             
             $followers = json_encode($results_raw->ids);
 
+
+          if(strpos($_SERVER['DOCUMENT_ROOT'], 'alex') != false){
             //query the string 
-            $db = DB::open();
+            $db = DB::open('twitter','localhost','root','root');
+
+          }else{
+   
+            $db = DB::open('twitter','localhost','root','');
+
+          }
 
              $raw_sql_select = "SELECT *
             FROM `twitter_user`
