@@ -1,69 +1,112 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<title>Hide your kids, hide your wife and hide your husbands</title>
+
+	<title>Your Twitter unfollowers </title>
+	<meta charset='utf-8'>
+
 </head>
 
 <body>
 
-<div id="content-pane">No content loaded</div>
+<input  width='120px' id="twitter_username" type="text" value="Please put your twitter username"/>
+<input id="check" type="button" value="start search"/>
+<div id="content-pane"></div>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
 <script src="http://ajax.cdnjs.com/ajax/libs/underscore.js/1.1.4/underscore-min.js"></script>
 <script src="http://ajax.cdnjs.com/ajax/libs/backbone.js/0.3.3/backbone-min.js"></script>
 
 <script type="text/javascript">
-(function ($) {
-	
-	var restfulApp = Backbone.Controller.extend({
-	
-		restfulUrl: "http://twitter.dev/dev/api/twitter/galaxy_watcher", //This is a free service to store key pair values
-		
-		//Routes tell the app what to do 
-		routes: {
-		"":                 	"defaultAction"//This simply matches any urls that weren't caught above and assigns it to "page"
-		},
-		
-		defaultAction: function (){
 
-				this.loadRestfulData( this.restfulUrl );
-			
+(function ($) {
+
+	var SearchView = Backbone.View.extend({
+
+		el:$('body'),
+		events:{
+		'focus input#twitter_username' : 'focusin',
+		'blur input#twitter_username' : 'blur',
+ 		'click input#check': 'check'
 		},
-		loadRestfulData: function( pageUrl ){
+
+	 initialize: function(){
+      _.bindAll(this, 'render', 'check'); // every function that uses 'this' as the current object should be in here
+      this.counter = 0; // total number of items added thus far
+      this.render(); 
+    },
+      render: function(){
+
+    },  
+    check: function(){
+
+    	twitter_name = $('#twitter_username').val();
+
+		//passing value to controller;
+		this.loadRestfulData("http://twitter.dev/dev/api/twitter/"+twitter_name);
+
+    },	
+    loadRestfulData: function(api){
+
 			//Set the content pane to a loading screen
 			$("#content-pane").text( "fetching your data..." );
 
 			//Load the data in using jQuerys ajax call
 			$.ajax({
-				url: pageUrl,
+				url: api,
 				dataType: "json",
 				success: function(data){
-					//Once we receive the data, set it to the content pane.
-					console.log(data);
 
-					console.log(data.length);
+					if (data!== null){
+
+					//Once we receive the data, set it to the content pane.
+					//console.log(data.length);
 
 					$("#content-pane").text( "Your Latest unfollowers are :" );
 
-					for (var i = 0; i < data.length; i++) {
-
-					console.log(data[i]);
-
-					var html = "<li><a href='http://twitter.com/#!/"+data[i].screen_name+"' target='_blank'><img src="+data[i].profile_image_url+" /><storng>"+data[i].name+"</strong><p>"+data[i].description+"</p></li><br/>";
-
-					$("#content-pane").append(html);
+						for (var i = 0; i < data.length; i++) {
 					
+						var html = "<li><a href='http://twitter.com/#!/"+data[i].screen_name+"' target='_blank'><img src="+data[i].profile_image_url+" /><storng>"+data[i].name+"</strong><p>"+data[i].description+"</p></li><br/>";
+
+						$("#content-pane").append(html);
+
+						}
+						
+					}else{
+					
+						var html="You are lucky, you have no unfollowers these between your lastest check.";
+						$("#content-pane").text(html);
+
 					};
 
 				}
 			});	
-		}
+		},
+
+		focusin:function(el){
+
+			if(el.target.value != ""){
+
+			$("#twitter_username").val("");
+
+			}
+
+ 	},
+ 	blur:function(el){
+
+			if(el.target.value == ""){
+
+			$("#twitter_username").val(el.target.defaultValue);
+
+				}
+
+
+ 	},
 	});
-	var app = new restfulApp;
-	//Initiate a new history and controller class
-	Backbone.emulateHTTP = true;
-	Backbone.emulateJSON = true 
-	Backbone.history.start();
+
+ 	var SearchView = new SearchView();      
+
 
 })(jQuery);
 

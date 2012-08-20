@@ -122,6 +122,7 @@ class RestClient {
         $curlopt = array(
             CURLOPT_HEADER => TRUE,
             CURLOPT_RETURNTRANSFER => TRUE,
+            CURLOPT_SSL_VERIFYPEER => FALSE,
             CURLOPT_USERAGENT => $client->options['user_agent']
         );
         

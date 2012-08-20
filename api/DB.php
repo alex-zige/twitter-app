@@ -21,11 +21,11 @@
 //            mysql_close(self::$DB_Conn);  <-- commented out due to current shared-link close 'feature'.  If left in, causes a warning that this is not a valid link resource.
         }
     }
-
     final class DB extends Database_Object
     {
-        public static function Open($database = 'twitter', $hostname = 'localhost', $username = 'root', $password = 'root')
-        {
+        public static function Open($database = 'twitter', $hostname = 'localhost', $username = 'root', $password = '')
+        {   
+
             if (!self::$DB_Open)
             {
                 self::$DB_Open = new self($database, $hostname, $username, $password);
