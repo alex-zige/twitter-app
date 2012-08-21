@@ -34,8 +34,53 @@ EOT;
 });
 
 
-//expose web services
+//put update the current status and save into database as beechmark
+$app->put('/twitter/:twitter_name','updateCurrentList');
 
+
+//update the twitter name
+function updateCurrentList($twitter_name){
+
+
+  //init the database connection
+   if(strpos($_SERVER['DOCUMENT_ROOT'], 'alex') != false){
+            //query the string 
+            $db = DB::open('twitter','localhost','root','root');
+
+          }else{
+   
+            $db = DB::open('twitter','localhost','root','');
+    }
+
+
+    //fire up the twitter request
+    $twitter = new RestClient(array(
+            'base_url' => "https://api.twitter.com/1")
+        );
+
+    $result = $twitter->get("followers/ids.json?cursor=-1&screen_name=".$twitter_name);
+
+    if($result->info->http_code == 200) {
+
+    $results_raw = json_decode($result->response);
+            
+    $followers = json_encode($results_raw->ids);
+
+    $raw_sql_update = "Update `twitter_user` SET `followers` = ".$followers." WHERE username =".$twitter_name;
+        
+   // $db->qry($raw_sql_update);
+
+    echo "{'200':'ok'}";
+
+    }
+
+}
+
+
+
+
+
+//expose web services
 $app->get('/twitter/:twitter_name', 'getFollowers');
 
         function getFollowers($twitter_name){
@@ -87,6 +132,7 @@ $app->get('/twitter/:twitter_name', 'getFollowers');
 
     }
  }
+
 
 /**
  * Comapre the latest fetched array with the one that saved in db
@@ -160,9 +206,6 @@ function runTwitterAPI($id){
 
         return $unfollower;
 }
-
-
-
 
 //POST route
 $app->post('/post', function () {
