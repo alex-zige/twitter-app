@@ -225,7 +225,6 @@ input[type=text]:focus {
 ------------------------- */
 .global-nav {
   background-color: #252525;
-  background-image: url(/t1/img/twitter_web_sprite_bgs.png);
   background-position: 0 0;
   background-repeat: repeat-x;
 }
@@ -235,7 +234,6 @@ input[type=text]:focus {
 i {
   display: inline-block;
   vertical-align: text-top;
-  background-image: url(/t1/img/twitter_web_sprite_icons.png);
   background-position: 0 0;
   background-repeat: no-repeat;
 }
