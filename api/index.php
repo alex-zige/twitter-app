@@ -78,8 +78,6 @@ function updateCurrentList($twitter_name){
 
 
 
-
-
 //expose web services
 $app->get('/twitter/:twitter_name', 'getFollowers');
 
@@ -109,14 +107,13 @@ $app->get('/twitter/:twitter_name', 'getFollowers');
             $db = DB::open('twitter','localhost','root','');
 
           }
-
              $raw_sql_select = "SELECT *
             FROM `twitter_user`
             WHERE `username` LIKE '".$twitter_name."'";
             //    echo $raw_sql_select;
             $flag = $db->qry($raw_sql_select,2);
 
-            if(!is_null($flag)){
+            if($flag){
 
               $recorded_followers = $flag['followers'];
 
@@ -125,10 +122,14 @@ $app->get('/twitter/:twitter_name', 'getFollowers');
             }else{
 
             $raw_sql_insert = "INSERT INTO `twitter`.`twitter_user` (`username`, `followers`, `fetchdate`, `requests`) VALUES ('{$twitter_name}', '{$followers}', '".date('Y-m-d H:i:s')."', '1')";
-
-            $db->qry($raw_sql_insert);
+            //echo "add to db";
+           // $db->qry($raw_sql_insert);
 
             }
+
+    }else{
+
+      echo "{'error2':'cannot find!'}";
 
     }
  }
@@ -150,6 +151,7 @@ function compare($new,$old){
     $array_new = json_decode($new); // one - unfollower 
 
     $array_old = json_decode($old);
+
                          
     $unfollowers_ids = array_diff($array_old, $array_new);
 

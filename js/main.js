@@ -9,7 +9,7 @@
 		el:$('body'),
 		events:{
  		'click input#search_submit': 'check',
- 		'click input#search_update': 'update'
+ 		'click button#update' :'update'
  		
 		},
 
@@ -31,7 +31,7 @@
 			
 		}else{
 
-			alert('Please insert your twitter user name');
+			bootbox.alert("Please insert your twitter user name");
 
 		}
 
@@ -48,10 +48,10 @@
 				dataType: "json",
 				success: function(data){
 
+
 					if (data!== null){
 
 					//Once we receive the data, set it to the content pane.
-					//console.log(data.length);
 
 					$("#content-pane").text( "Your Latest unfollowers are :" );
 
@@ -63,8 +63,14 @@
 
 						}
 						
-					}else{
 					
+
+					}else{
+
+						// alert the box for udpate the latest records?
+						$("#udpateModal").modal('show');
+
+						//live = same
 						var html="You are lucky, you have no unfollowers these between your lastest check.";
 						$("#content-pane").text(html);
 
@@ -73,16 +79,17 @@
 				},
 				error:function(){
 
-					alert('Sorry, we cannot content your twitter account? Please make sure you input the right user name!');
+					bootbox.alert("Sorry, we cannot content your twitter account? Please make sure you input the right user name!");
 
+					var html ="";
+
+					$("#content-pane").text(html);
 				}
 
 			});	
 		},
 
 		update:function(){
-
-			alert('hi');
 			
 		var restful_put_url = "http://twitter.dev/dev/api/twitter/galaxy_watcher";
 			$.ajax({
@@ -95,6 +102,7 @@
 
 			});
 
+		
 
 
 
