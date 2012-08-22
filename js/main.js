@@ -48,6 +48,7 @@
 				dataType: "json",
 				success: function(data){
 
+					console.log(data[0].error);
 
 					if (data!== null){
 
@@ -57,7 +58,16 @@
 
 						for (var i = 0; i < data.length; i++) {
 					
-						var html = "<li><a href='http://twitter.com/#!/"+data[i].screen_name+"' target='_blank'><img src="+data[i].profile_image_url+" /><storng>"+data[i].name+"</strong><p>"+data[i].description+"</p></li><br/>";
+							if(data[i].error == undefined){
+
+							var html = "<li><a href='http://twitter.com/#!/"+data[i].screen_name+"' target='_blank'><img src="+data[i].profile_image_url+" /><storng>"+data[i].name+"</strong><p>"+data[i].description+"</p></li><br/>";
+							
+							}else{
+							
+							var html = "<li>"+data[i].error+"</li>";
+
+							}
+
 
 						$("#content-pane").append(html);
 

@@ -122,12 +122,13 @@ $app->get('/twitter/:twitter_name', 'getFollowers');
             }else{
 
             $raw_sql_insert = "INSERT INTO `twitter`.`twitter_user` (`username`, `followers`, `fetchdate`, `requests`) VALUES ('{$twitter_name}', '{$followers}', '".date('Y-m-d H:i:s')."', '1')";
-            //echo "add to db";
+            
+            echo "{'first':'init'}";
            // $db->qry($raw_sql_insert);
 
             }
 
-    }else{
+      }else{
 
       echo "{'error2':'cannot find!'}";
 
@@ -199,12 +200,19 @@ function runTwitterAPI($id){
             'base_url' => "https://api.twitter.com/1")
         );
 
+    //echo $id;
+
         $result = $twiiter->get("users/show.json?user_id=".$id);
 
         if($result->info->http_code == 200)
             {
         $unfollower = json_decode($result->response);
+            }else{
+
+        $unfollower = array('error'=>'User has been suspended');      
+
             }
+
 
         return $unfollower;
 }
