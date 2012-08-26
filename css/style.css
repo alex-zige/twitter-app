@@ -123,6 +123,57 @@ input[type=text]:focus {
 }
 
 
+/*
+
+unfollowers style
+
+*/
+
+.unfollowers{
+margin-top: 20px;
+list-style: none;
+height: 100%;
+width: 600px;
+text-align: left;
+margin-left: 175px;
+}
+.unfollowers img{
+border-radius: 5px 5px 5px 5px;
+}
+div.left{
+
+  width: 80px;
+  float: left;
+}
+
+div.right{
+
+width: 500px;
+float: left;
+}
+.fullname{
+  font-weight: bold;
+  color: #fff;
+
+}
+.username{
+    font-weight: lighter;
+    color: #999999;
+    font-size: 12px;
+}
+.bio{
+    font-size: 14px;
+    font-style: italic;
+    margin-top: -2px;
+    text-align: left;
+    word-wrap: break-word;
+    line-height: 18px;
+}
+.modal-body p{
+  color: #000;
+
+}
+
 /* Global top navigation
 -------------------------------------------------- */
 
@@ -386,7 +437,10 @@ p a {
 .footer a:hover {
   color: #fff;
 }
+.clearfix{
+clear:both;
 
+}
 
 /* Responsive layout
 -------------------------------------------------- */

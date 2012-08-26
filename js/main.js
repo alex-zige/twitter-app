@@ -56,11 +56,33 @@
 
 					$("#content-pane").text( "Your Latest unfollowers are :" );
 
+						var html_wrapper = "<ul>";
+
 						for (var i = 0; i < data.length; i++) {
 					
 							if(data[i].error == undefined){
 
-							var html = "<li><a href='http://twitter.com/#!/"+data[i].screen_name+"' target='_blank'><img src="+data[i].profile_image_url+" /><storng>"+data[i].name+"</strong><p>"+data[i].description+"</p></li><br/>";
+								console.log(data[i]);
+
+							var html = "<li class='unfollowers'>";
+
+							html += "<div class='left'>";
+
+							html +="<a href='http://twitter.com/#!/"+data[i].screen_name+"' target='_blank'>";
+
+							html +="<img src="+data[i].profile_image_url+" /></a></div>";
+
+							html +="<div class='right'><storng class='fullname'>"+data[i].name+" </strong><span>‏</span>";
+
+							html +="<storng class='username'>@"+data[i].screen_name+"</strong>";
+
+							html +="<p class='bio'>";
+
+							html +=data[i].description+"</p></div>";
+
+							html +="</li>";
+
+							//var html_new= html;
 							
 							}else{
 							
@@ -69,15 +91,20 @@
 							}
 
 
+						html_wrapper +="</ul>";
+
 						$("#content-pane").append(html);
+
+						// alert the box for udpate the latest records?
+						$("#udpateModal").modal('show');
+						
 
 						}
 						
-					
+
 
 					}else{
 
-						// alert the box for udpate the latest records?
 						$("#udpateModal").modal('show');
 
 						//live = same
@@ -111,9 +138,6 @@
 				}	
 
 			});
-
-		
-
 
 
  		}
