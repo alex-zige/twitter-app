@@ -48,7 +48,7 @@
 				dataType: "json",
 				success: function(data){
 
-					console.log(data[0].error);
+//					console.log(data[0].error);
 
 					if (data!== null){
 
@@ -72,14 +72,12 @@
 						$("#content-pane").append(html);
 
 						}
-						
 					
 
 					}else{
 
 						// alert the box for udpate the latest records?
 						$("#udpateModal").modal('show');
-
 						//live = same
 						var html="You are lucky, you have no unfollowers these between your lastest check.";
 						$("#content-pane").text(html);

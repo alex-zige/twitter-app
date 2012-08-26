@@ -124,13 +124,12 @@ $app->get('/twitter/:twitter_name', 'getFollowers');
             $raw_sql_insert = "INSERT INTO `twitter`.`twitter_user` (`username`, `followers`, `fetchdate`, `requests`) VALUES ('{$twitter_name}', '{$followers}', '".date('Y-m-d H:i:s')."', '1')";
             
             echo "{'first':'init'}";
-           // $db->qry($raw_sql_insert);
 
             }
 
       }else{
 
-      echo "{'error2':'cannot find!'}";
+      echo "{'error':'cannot find!'}";
 
     }
  }
@@ -164,7 +163,7 @@ function compare($new,$old){
 
     }else{
 
-      echo null;
+      echo "{'error':'no unfollowers from your last check!'}";
 
     }
     //finding out what's missing in new.
