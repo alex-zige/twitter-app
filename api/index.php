@@ -15,6 +15,8 @@ require  'RestClient.php';
 
 require  'DB.php';
 
+require  'Twitter.php';
+
 $app = new Slim();
 
 //GET route
@@ -38,27 +40,17 @@ EOT;
 $app->put('/twitter/:twitter_name','updateCurrentList');
 
 
+//POST route create new account
+$app->post('/twitter/:twitter_name', 'createNewAccount');
+
 //update the twitter name
 function updateCurrentList($twitter_name){
 
-
-  //init the database connection
-   if(strpos($_SERVER['DOCUMENT_ROOT'], 'alex') != false){
-            //query the string 
-            $db = DB::open('twitter','localhost','root','root');
-
-          }else{
-   
-            $db = DB::open('twitter','localhost','root','');
-    }
-
+    //open up custom twitter DB
+      $db = Twitter::customDB();
 
     //fire up the twitter request
-    $twitter = new RestClient(array(
-            'base_url' => "https://api.twitter.com/1")
-        );
-
-    $result = $twitter->get("followers/ids.json?cursor=-1&screen_name=".$twitter_name);
+    $result = Twitter::getFollowersbyScreenName($twitter_name);
 
     if($result->info->http_code == 200) {
 
@@ -73,22 +65,15 @@ function updateCurrentList($twitter_name){
     echo "{'200':'ok'}";
 
     }
-
 }
 
 
-
-//expose web services
+//expose web services  - GET
 $app->get('/twitter/:twitter_name', 'getFollowers');
 
         function getFollowers($twitter_name){
 
-        $twitter = new RestClient(array(
-            'base_url' => "https://api.twitter.com/1")
-        );
-
-        $result = $twitter->get("followers/ids.json?cursor=-1&screen_name=".$twitter_name);
-
+        $result = Twitter::getFollowersbyScreenName($twitter_name);
 
         // if response okay.
         if($result->info->http_code == 200){
@@ -97,16 +82,9 @@ $app->get('/twitter/:twitter_name', 'getFollowers');
             
             $followers = json_encode($results_raw->ids);
 
+            //open up custom twitter DB
+            $db = Twitter::customDB();
 
-          if(strpos($_SERVER['DOCUMENT_ROOT'], 'alex') != false){
-            //query the string 
-            $db = DB::open('twitter','localhost','root','root');
-
-          }else{
-   
-            $db = DB::open('twitter','localhost','root','');
-
-          }
              $raw_sql_select = "SELECT *
             FROM `twitter_user`
             WHERE `username` LIKE '".$twitter_name."'";
@@ -123,18 +101,37 @@ $app->get('/twitter/:twitter_name', 'getFollowers');
 
             $raw_sql_insert = "INSERT INTO `twitter`.`twitter_user` (`username`, `followers`, `fetchdate`, `requests`) VALUES ('{$twitter_name}', '{$followers}', '".date('Y-m-d H:i:s')."', '1')";
             
-            echo "{'first':'init'}";
+            //error code 100 -> new user
+            echo json_encode(array('error_code'=>'100'));
 
             }
 
       }else{
-
-      echo "{'error':'cannot find!'}";
-
+            //error code 404 -> cannot be found.
+           echo json_encode(array('error_code'=>'404'));
     }
  }
 
 
+/**
+ * createNewAccount 
+ *
+ * @return JSON object with the latest unfollower.
+ * @author Alex
+ **/
+
+function createNewAccount($twitter_name){
+
+      $db = Twitter::customDB();
+
+     $raw_sql_insert = "INSERT INTO `twitter`.`twitter_user` (`username`, `followers`, `fetchdate`, `requests`) VALUES ('{$twitter_name}', '{$followers}', '".date('Y-m-d H:i:s')."', '1')";
+    //$db->qry($raw_sql_insert);
+
+     echo $twitter_name;
+
+
+}
+ 
 /**
  * Comapre the latest fetched array with the one that saved in db
  *
@@ -216,10 +213,6 @@ function runTwitterAPI($id){
         return $unfollower;
 }
 
-//POST route
-$app->post('/post', function () {
-    echo 'This is a POST route';
-});
 
 //PUT route
 $app->put('/put', function () {

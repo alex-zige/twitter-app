@@ -1,7 +1,6 @@
 /*
 * main js for unfollwers app
 */
-
 (function ($) {
 
 	var SearchView = Backbone.View.extend({
@@ -9,7 +8,7 @@
 		el:$('body'),
 		events:{
  		'click input#search_submit': 'check',
- 		'click button#update' :'update'
+ 		'click button#init' :'init'
  		
 		},
 
@@ -30,9 +29,7 @@
 			this.loadRestfulData("http://twitter.dev/dev/api/twitter/"+twitter_name);
 			
 		}else{
-
 			bootbox.alert("Please insert your twitter user name");
-
 		}
 
     },	
@@ -47,13 +44,13 @@
 				type:'get',
 				dataType: "json",
 				success: function(data){
+				console.log(data.error);
 
-//					console.log(data[0].error);
+					//if no errors
+				if ( data!== null && data.error_code === undefined){
 
-					if (data!== null){
-
+					if (data!== null) {
 					//Once we receive the data, set it to the content pane.
-
 					$("#content-pane").text( "Your Latest unfollowers are :" );
 
 						var html_wrapper = "<ul>";
@@ -62,7 +59,7 @@
 					
 							if(data[i].error == undefined){
 
-								console.log(data[i]);
+							console.log(data[i]);
 
 							var html = "<li class='unfollowers'>";
 
@@ -81,37 +78,52 @@
 							html +=data[i].description+"</p></div>";
 
 							html +="</li>";
-
-							//var html_new= html;
 							
 							}else{
-							
-							var html = "<li>"+data[i].error+"</li>";
-
+								var html = "<li>"+data[i].error+"</li>";
 							}
 
+							html_wrapper +="</ul>";
 
-						html_wrapper +="</ul>";
+							$("#content-pane").append(html);
 
-						$("#content-pane").append(html);
-
-						// alert the box for udpate the latest records?
-						$("#udpateModal").modal('show');
-						
-
+  							//setTimeout(	$("#udpateModal").modal('show'), 2000);
 						}
 
 					}else{
 
-						$("#udpateModal").modal('show');
 						//live = same
 						var html="You are lucky, you have no unfollowers these between your lastest check.";
 						$("#content-pane").text(html);
 
-					};
+						}
+				}else{
+					// has error code:
+					switch(data.error_code){
+
+						case '404':
+						bootbox.alert("The user with the twitter name cannot be found! Please verify your account name.");
+						break;
+
+						case '100':
+						$("#udpateModal").modal('show');
+
+						break;
+
+						default:
+						break;
+
+					}
+
+					//display error message
+					//clear this content pane
+					$("#content-pane").text('');
+
+				};
 
 				},
-				error:function(){
+				error:function(data){
+
 
 					bootbox.alert("Sorry, we cannot content your twitter account? Please make sure you input the right user name!");
 
@@ -135,12 +147,24 @@
 				}	
 
 			});
+ 		},
+ 		init:function(){
+    	twitter_name = $('#twitter_username').val();
 
+		var restful_put_url = "http://twitter.dev/dev/api/twitter/"+twitter_name;
 
+			$.ajax({
+				url: restful_put_url,
+				type:'post',
+				dataType: "json",
+				success: function(data){
+				console.log(data);
+				}	
+		});
  		}
+
  	});
-
+	
+	//init the app
  	var SearchView = new SearchView();      
-
-
 })(jQuery);
