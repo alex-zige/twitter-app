@@ -18,7 +18,7 @@
 
         public function __destruct()
         {
-//            mysql_close(self::$DB_Conn);  <-- commented out due to current shared-link close 'feature'.  If left in, causes a warning that this is not a valid link resource.
+        //        mysql_close(self::$DB_Conn);  <-- commented out due to current shared-link close 'feature'.  If left in, causes a warning that this is not a valid link resource.
         }
     }
     final class DB extends Database_Object

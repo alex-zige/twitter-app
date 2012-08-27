@@ -123,12 +123,8 @@
 
 				},
 				error:function(data){
-
-
 					bootbox.alert("Sorry, we cannot content your twitter account? Please make sure you input the right user name!");
-
 					var html ="";
-
 					$("#content-pane").text(html);
 				}
 
@@ -158,7 +154,25 @@
 				type:'post',
 				dataType: "json",
 				success: function(data){
-				console.log(data);
+
+				if(data.error_code == undefined ){
+				//hide the modal box 
+				$("#udpateModal").modal('hide');
+				
+				//notify the content message
+				$("#content-pane").html("Congratulation, your account storge has been initialized.<br/><br/>Come back later to find out who's the evil unfollowers!");
+				
+				}else{
+
+				bootbox.alert('Sorry, our server is having issue repsonding your requsts,please try it later.');
+
+				}
+
+				},
+				error:function(){
+
+				bootbox.alert("Sorry, we are having problem with initializing your account, Please try it later");
+
 				}	
 		});
  		}

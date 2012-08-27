@@ -20,21 +20,7 @@ require  'Twitter.php';
 $app = new Slim();
 
 //GET route
-$app->get('/', function () {
-    $template = <<<EOT
-<!DOCTYPE html>
-    <html>
-     <head> API center </head>
-     <meta charset='utf-8'>
-        <body>
-            <header></header>
-            <h1>Twitter unfollowers</h1>           
-        </body>
-    </html>
-EOT;
-    echo $template;
-});
-
+$app->get('/', function () {});
 
 //put update the current status and save into database as beechmark
 $app->put('/twitter/:twitter_name','updateCurrentList');
@@ -47,7 +33,7 @@ $app->post('/twitter/:twitter_name', 'createNewAccount');
 function updateCurrentList($twitter_name){
 
     //open up custom twitter DB
-      $db = Twitter::customDB();
+    $db = Twitter::customDB();
 
     //fire up the twitter request
     $result = Twitter::getFollowersbyScreenName($twitter_name);
@@ -85,7 +71,7 @@ $app->get('/twitter/:twitter_name', 'getFollowers');
             //open up custom twitter DB
             $db = Twitter::customDB();
 
-             $raw_sql_select = "SELECT *
+            $raw_sql_select = "SELECT *
             FROM `twitter_user`
             WHERE `username` LIKE '".$twitter_name."'";
             //    echo $raw_sql_select;
@@ -98,9 +84,7 @@ $app->get('/twitter/:twitter_name', 'getFollowers');
               compare($followers,$recorded_followers);
 
             }else{
-
-            $raw_sql_insert = "INSERT INTO `twitter`.`twitter_user` (`username`, `followers`, `fetchdate`, `requests`) VALUES ('{$twitter_name}', '{$followers}', '".date('Y-m-d H:i:s')."', '1')";
-            
+    
             //error code 100 -> new user
             echo json_encode(array('error_code'=>'100'));
 
@@ -124,11 +108,27 @@ function createNewAccount($twitter_name){
 
       $db = Twitter::customDB();
 
-     $raw_sql_insert = "INSERT INTO `twitter`.`twitter_user` (`username`, `followers`, `fetchdate`, `requests`) VALUES ('{$twitter_name}', '{$followers}', '".date('Y-m-d H:i:s')."', '1')";
-    //$db->qry($raw_sql_insert);
+      $result = Twitter::getFollowersbyScreenName($twitter_name);
 
-     echo $twitter_name;
+      if($result->info->http_code == 200) {
 
+        $results_raw = json_decode($result->response);
+            
+        $followers = json_encode($results_raw->ids);
+
+       //insert new create.
+        $raw_sql_insert = "INSERT INTO `twitter`.`twitter_user` (`username`, `followers`, `fetchdate`, `requests`) VALUES ('{$twitter_name}', '{$followers}', '".date('Y-m-d H:i:s')."', '1')";
+        //$db->qty($raw_sql_insert);   
+
+        echo $raw_sql_insert;
+
+
+      }else{
+
+      //cannot init new users
+      echo json_encode(array('error_code'=>'200'));
+      
+      }
 
 }
  
