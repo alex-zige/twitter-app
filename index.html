@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
 	<title>Find Your Twitter unfollowers</title>
 
 </head>
@@ -38,13 +40,14 @@
             </ul>
             <div class="pull-right">
               <ul class="nav secondary-nav">
-                <li><a href="//twitter.com" id="homeLink">Github</a></li>
+                <li><a href="https://github.com/alex-zige/twitter-app" id="homeLink">Github</a></li>
               </ul>
             </div>
           </div>
         </div>
       </div>
 </div>
+
 <div class="body-content">
 <h1>Twitter Unfollowers Search</h1>
 <p>find out your unfollowers in a second.</p>
@@ -103,9 +106,18 @@
 <script type="text/javascript" src="js/libs/bootbox.js"></script>
 <!-- main js file controlls the view  -->
 <script type="text/javascript" src="js/main.js"></script>
+
+<script type="text/javascript" src="js/libs/imagesLoaded.js"></script>
+
 <script type="text/javascript">
 
-  $("#fullpage_background").hide().fadeIn(1500);
+  //fadein in action when image is loaded completely
+ try{
+  $("#fullpage_background").hide().imagesLoaded(function(){this.fadeIn('slow')});
+  }
+  catch(e){
+
+  };
 
 </script>
 
