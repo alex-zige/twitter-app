@@ -1,15 +1,20 @@
 <?php
 
 /**
- * Step 1: Require the Slim PHP 5 Framework
- *
- * If using the default file layout, the `Slim/` directory
- * will already be on your include path. If you move the `Slim/`
- * directory elsewhere, ensure that it is added to your include path
- * or update this file path as needed.
- */
-
-require 'Slim/Slim.php';
+* Error_Code:
+*  100 => new users
+*  200 => cannot init new users
+*  300 => update current version failed
+*  404 => user cannot be found
+*  500 => User has been suspended
+*
+* Success_Code:
+*  101 => finished compare,but no new users
+*  202 => update successful
+*  404 => user cannot be found
+*  
+**/
+require  'Slim/Slim.php';
 
 require  'RestClient.php';
 
@@ -25,33 +30,35 @@ $app->get('/', function () {});
 //put update the current status and save into database as beechmark
 $app->put('/twitter/:twitter_name','updateCurrentList');
 
-
 //POST route create new account
 $app->post('/twitter/:twitter_name', 'createNewAccount');
 
-//update the twitter name
-function updateCurrentList($twitter_name){
+  //update the twitter name
+    function updateCurrentList($twitter_name){
 
-    //open up custom twitter DB
-    $db = Twitter::customDB();
+      //open up custom twitter DB
+      $db = Twitter::customDB();
 
-    //fire up the twitter request
-    $result = Twitter::getFollowersbyScreenName($twitter_name);
+      //fire up the twitter request
+      $result = Twitter::getFollowersbyScreenName($twitter_name);
 
-    if($result->info->http_code == 200) {
+      if($result->info->http_code == 200) {
 
-    $results_raw = json_decode($result->response);
-            
-    $followers = json_encode($results_raw->ids);
+      $results_raw = json_decode($result->response);
+              
+      $followers = json_encode($results_raw->ids);
 
-    $raw_sql_update = "Update `twitter_user` SET `followers` = ".$followers." WHERE username =".$twitter_name;
-        
-   // $db->qry($raw_sql_update);
+      $raw_sql_update = "Update `twitter_user` SET `followers` = ".$followers." WHERE username =".$twitter_name;
+   
+      echo json_encode(array('success_code'=>'202'));
 
-    echo "{'200':'ok'}";
+      }else{
 
-    }
-}
+      //update current version failed
+      echo json_encode(array('error_code'=>'300'));
+
+      }
+  }
 
 
 //expose web services  - GET
@@ -74,7 +81,7 @@ $app->get('/twitter/:twitter_name', 'getFollowers');
             $raw_sql_select = "SELECT *
             FROM `twitter_user`
             WHERE `username` LIKE '".$twitter_name."'";
-            //    echo $raw_sql_select;
+        
             $flag = $db->qry($raw_sql_select,2);
 
             if($flag){
@@ -106,7 +113,16 @@ $app->get('/twitter/:twitter_name', 'getFollowers');
 
 function createNewAccount($twitter_name){
 
-      $db = Twitter::customDB();
+
+       if(strpos($_SERVER['DOCUMENT_ROOT'], 'alex') != false){
+                //query the string 
+                $db = DB::open('twitter','localhost','root','root');
+
+              }else{
+       
+                $db = DB::open('twitter','localhost','root','');
+
+         }
 
       $result = Twitter::getFollowersbyScreenName($twitter_name);
 
@@ -118,10 +134,11 @@ function createNewAccount($twitter_name){
 
        //insert new create.
         $raw_sql_insert = "INSERT INTO `twitter`.`twitter_user` (`username`, `followers`, `fetchdate`, `requests`) VALUES ('{$twitter_name}', '{$followers}', '".date('Y-m-d H:i:s')."', '1')";
-        //$db->qty($raw_sql_insert);   
+      
+        $db->qry($raw_sql_insert);   
 
-        echo $raw_sql_insert;
-
+      //cannot init new users
+     echo json_encode(array('success_code'=>'200'));
 
       }else{
 
@@ -133,7 +150,7 @@ function createNewAccount($twitter_name){
 }
  
 /**
- * Comapre the latest fetched array with the one that saved in db
+ * compare the latest fetched array with the one that saved in db
  *
  * @return JSON object with the latest unfollower.
  * @author Alex
@@ -148,7 +165,6 @@ function compare($new,$old){
     $array_new = json_decode($new); // one - unfollower 
 
     $array_old = json_decode($old);
-
                          
     $unfollowers_ids = array_diff($array_old, $array_new);
 
@@ -156,11 +172,12 @@ function compare($new,$old){
     {
         //value has point of differents
        $unfollowers = getUnfollowersProfile($unfollowers_ids);
+
       echo json_encode($unfollowers);
 
     }else{
 
-      echo "{'error':'no unfollowers from your last check!'}";
+      echo json_encode(array('success_code'=>'101'));
 
     }
     //finding out what's missing in new.
@@ -192,23 +209,22 @@ function getUnfollowersProfile($unfollowers_ids){
 
 function runTwitterAPI($id){
 
-   $twiiter = new RestClient(array(
+   $twitter = new RestClient(array(
             'base_url' => "https://api.twitter.com/1")
         );
 
     //echo $id;
 
-        $result = $twiiter->get("users/show.json?user_id=".$id);
+        $result = $twitter->get("users/show.json?user_id=".$id);
 
         if($result->info->http_code == 200)
             {
         $unfollower = json_decode($result->response);
             }else{
 
-        $unfollower = array('error'=>'User has been suspended');      
+        $unfollower = array('error_code'=>'500');      
 
             }
-
 
         return $unfollower;
 }

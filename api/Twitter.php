@@ -6,7 +6,6 @@ class Twitter {
 
     protected static $screen_name;
 
-
     public static function getFollowersbyScreenName($screen_name){
 
     //init a restful client. 

@@ -9,7 +9,6 @@
 		events:{
  		'click input#search_submit': 'check',
  		'click button#init' :'init'
- 		
 		},
 
 	 initialize: function(){
@@ -22,17 +21,26 @@
    	    },  
       check: function(){
 
-    	twitter_name = $('#twitter_username').val();
+	    	twitter_name = $('#twitter_username').val();
 
-    	if(twitter_name != ""){
-			//passing value to controller;
-			this.loadRestfulData("http://twitter.dev/dev/api/twitter/"+twitter_name);
-			
+	    	var regex_pat_whitespace = /\s/;
+
+	    	if( regex_pat_whitespace.test(twitter_name) != true){
+
+		    	if(twitter_name != ""){
+					//passing value to controller;
+					this.loadRestfulData("http://twitter.dev/dev/api/twitter/"+twitter_name);
+					
+				}else{
+					bootbox.alert("Please insert your twitter user name!");
+				}	
+		
 		}else{
-			bootbox.alert("Please insert your twitter user name");
+			bootbox.alert("Please insert your valida user name! You shouldn't have whitespace in your twitter name. ");
+
 		}
 
-    },	
+   },	
     loadRestfulData: function(api){
 
 			//Set the content pane to a loading screen
@@ -44,12 +52,11 @@
 				type:'get',
 				dataType: "json",
 				success: function(data){
-				console.log(data.error);
 
 					//if no errors
 				if ( data!== null && data.error_code === undefined){
 
-					if (data!== null) {
+					if (data!== null && data.success_code === undefined) {
 					//Once we receive the data, set it to the content pane.
 					$("#content-pane").text( "Your Latest unfollowers are :" );
 
@@ -80,6 +87,7 @@
 							html +="</li>";
 							
 							}else{
+
 								var html = "<li>"+data[i].error+"</li>";
 							}
 
@@ -87,20 +95,18 @@
 
 							$("#content-pane").append(html);
 
-  							//setTimeout(	$("#udpateModal").modal('show'), 2000);
 						}
 
-					}else{
+					}else if(data.success_code !== null && data.success_code == 101){
 
-						//live = same
 						var html="You are lucky, you have no unfollowers these between your lastest check.";
+
 						$("#content-pane").text(html);
 
 						}
 				}else{
 					// has error code:
 					switch(data.error_code){
-
 						case '404':
 						bootbox.alert("The user with the twitter name cannot be found! Please verify your account name.");
 						break;
@@ -133,7 +139,10 @@
 
 		update:function(){
 			
-		var restful_put_url = "http://twitter.dev/dev/api/twitter/galaxy_watcher";
+		//get the twitter name
+    	twitter_name = $('#twitter_username').val();
+
+		var restful_put_url = "http://twitter.dev/dev/api/twitter/".twitter_name;
 			$.ajax({
 				url: restful_put_url,
 				type:'put',
@@ -169,8 +178,8 @@
 				}
 
 				},
-				error:function(){
-
+				error:function(data){
+				console.log(data);	
 				bootbox.alert("Sorry, we are having problem with initializing your account, Please try it later");
 
 				}	
