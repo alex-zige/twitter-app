@@ -2,6 +2,8 @@
 
 class Twitter {
 
+    protected static $db_name = 'twitter';
+
     protected static $base_url = "https://api.twitter.com/1";
 
     protected static $screen_name;
@@ -31,6 +33,45 @@ class Twitter {
               }
 
         return $db;
+    }
+
+    public static function updates($twitter_user = 'galaxy_watcher', $array_values=''){
+
+    //  UPDATE `twitter`.`twitter_user` SET `requests` = '2' WHERE `twitter_user`.`ID` =6;
+
+      $array_values = array(
+
+        'requests'=>'2',
+
+        );
+     $element='';
+
+     $sql = "UPDATE `twitter`.`twitter_user` SET";
+
+      if(is_array($array_values)){
+
+        foreach ($array_values as $key => $value) {
+
+         $element .="`".$key."` = '".$value."',";
+
+        }
+
+      
+       $element .= rtrim($element,',');
+
+        $sql .=" WHERE `twitter_user`.`ID` =6;";
+
+        echo $sql;
+
+      }else{
+
+
+
+
+      }
+
+
+
     }
 
 } 

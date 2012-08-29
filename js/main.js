@@ -118,13 +118,11 @@
 
 						default:
 						break;
-
 					}
 
 					//display error message
 					//clear this content pane
 					$("#content-pane").text('');
-
 				};
 
 				},
@@ -138,7 +136,6 @@
 		},
 
 		update:function(){
-			
 		//get the twitter name
     	twitter_name = $('#twitter_username').val();
 
@@ -164,18 +161,18 @@
 				dataType: "json",
 				success: function(data){
 
-				if(data.error_code == undefined ){
-				//hide the modal box 
-				$("#udpateModal").modal('hide');
-				
-				//notify the content message
-				$("#content-pane").html("Congratulation, your account storge has been initialized.<br/><br/>Come back later to find out who's the evil unfollowers!");
-				
-				}else{
+					if(data.error_code == undefined ){
+					//hide the modal box 
+					$("#udpateModal").modal('hide');
+					
+					//notify the content message
+					$("#content-pane").html("Congratulation, your account storge has been initialized.<br/><br/>Come back later to find out who's the evil unfollowers!");
+					
+					}else{
 
-				bootbox.alert('Sorry, our server is having issue repsonding your requsts,please try it later.');
+					bootbox.alert('Sorry, our server is having issue repsonding your requsts,please try it later.');
 
-				}
+					}
 
 				},
 				error:function(data){

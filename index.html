@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
-
 <head>
 
-	<title>Find Your Twitter unfollowers</title>
+	<title>Find Your Twitter Unfollowers</title>
 
 </head>
 
@@ -25,6 +24,7 @@
     <!-- Le fav and touch icons -->
     <link rel="shortcut icon" href="assets/ico/favicon.ico">
     <link href="css/style.css" rel="stylesheet">
+    
 <body>
 
 <div class="topbar js-topbar">
@@ -64,56 +64,64 @@
 
 	</div>
 
-
 <!-- notify the first access -->
+
 <!-- modal blocks -->
     <div class="modal hide fade" id="udpateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      <h3 id="myModalLabel">First Time Access?</h3>
-      </div>
-      <div class="modal-body">
-      <p>Our system has detected this is the first time you are using our services, we need to initialize our storage for your account?</p>
-      </div>
-      <div class="modal-footer">
-      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-      <button id="init" class="btn btn-primary">Init Now</button>
-      </div>
-</div>
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">First Time Access?</h3>
+        </div>
+        <div class="modal-body">
+        <p>Our system has detected this is the first time you are using our services, we need to initialize our storage for your account?</p>
+        </div>
+        <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <button id="init" class="btn btn-primary">Init Now</button>
+        </div>
+   </div>
 <!-- modal blocks ends -->
 
 <div class="clearfix"></div>
-<div class="footer">
-<ul class="links"> 
-<li class="first">&copy 2012 NovaInspire</li>
-<li><a href="http://www.novainspire.com" target="_blank">About us</a></li>
-<li><a href="help">Help</a></li>
-<li><a href="contact">Contact</a></li>
 
-</ul>
+<div class="footer">
+  <ul class="links"> 
+  <li class="first">&copy 2012 NovaInspire</li>
+  <li><a href="http://www.novainspire.com" target="_blank">About us</a></li>
+  <li><a href="help">Help</a></li>
+  <li><a href="contact">Contact</a></li>
+  </ul>
 </div>
 
 </div>
 
 <div id="overlay" class="fullpage_background overlay"></div>
 
-<img id="fullpage_background" class="fullpage_background" style="opacity: 0.7; display: hidden;" alt="" src="http://www.valarventures.com/wp-content/uploads/2012/03/SanFran1.jpg">
+<img id="fullpage_background" class="fullpage_background" style="opacity: 0.7; display: hidden;" alt="" src="assets/img/Budapest.jpg">
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script src="http://ajax.cdnjs.com/ajax/libs/underscore.js/1.1.4/underscore-min.js"></script>
 <script src="http://ajax.cdnjs.com/ajax/libs/backbone.js/0.3.3/backbone-min.js"></script>
-<script type="text/javascript" src="assets/js/bootstrap.js"></script>
+<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/libs/bootbox.js"></script>
+
 <!-- main js file controlls the view  -->
 <script type="text/javascript" src="js/main.js"></script>
 
 <script type="text/javascript" src="js/libs/imagesLoaded.js"></script>
 
+<script type="text/javascript" src="js/libs/jquery.backstretch.js"></script>
+
 <script type="text/javascript">
 
   //fadein in action when image is loaded completely
  try{
+
+  $.backstretch($("#fullpage_background").src, {speed: 150});
+
   $("#fullpage_background").hide().imagesLoaded(function(){this.fadeIn('slow')});
+
+
   }
   catch(e){
 

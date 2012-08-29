@@ -25,7 +25,11 @@ require  'Twitter.php';
 $app = new Slim();
 
 //GET route
-$app->get('/', function () {});
+$app->get('/', function () {
+
+Twitter::updates();
+  
+});
 
 //put update the current status and save into database as beechmark
 $app->put('/twitter/:twitter_name','updateCurrentList');
@@ -86,6 +90,9 @@ $app->get('/twitter/:twitter_name', 'getFollowers');
 
             if($flag){
 
+              //add the request + 1 => recording how many times the users used the services.
+              $request = $flag['requests']+1;
+
               $recorded_followers = $flag['followers'];
 
               compare($followers,$recorded_followers);
@@ -110,7 +117,6 @@ $app->get('/twitter/:twitter_name', 'getFollowers');
  * @return JSON object with the latest unfollower.
  * @author Alex
  **/
-
 function createNewAccount($twitter_name){
 
 
