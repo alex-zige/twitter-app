@@ -1,19 +1,5 @@
 <?php
 
-/**
-* Error_Code:
-*  100 => new users
-*  200 => cannot init new users
-*  300 => update current version failed
-*  404 => user cannot be found
-*  500 => User has been suspended
-*
-* Success_Code:
-*  101 => finished compare,but no new users
-*  202 => update successful
-*  404 => user cannot be found
-*  
-**/
 require  'Slim/Slim.php';
 
 require  'RestClient.php';
@@ -27,12 +13,12 @@ $app = new Slim();
 //GET route
 $app->get('/', function () {
 
-Twitter::updates();
-  
+  // this is the default controllers
 });
 
 //put update the current status and save into database as beechmark
 $app->put('/twitter/:twitter_name','updateCurrentList');
+
 
 //POST route create new account
 $app->post('/twitter/:twitter_name', 'createNewAccount');
@@ -64,7 +50,6 @@ $app->post('/twitter/:twitter_name', 'createNewAccount');
       }
   }
 
-
 //expose web services  - GET
 $app->get('/twitter/:twitter_name', 'getFollowers');
 
@@ -93,6 +78,27 @@ $app->get('/twitter/:twitter_name', 'getFollowers');
               //add the request + 1 => recording how many times the users used the services.
               $request = $flag['requests']+1;
 
+              //make up the insert the query
+              $update_request = array( 'requests' =>$request);
+
+
+              $sql_insert = Twitter::generateUpdateSQL($twitter_name,$update_request);
+
+              //die if run into problems.
+              $sql_insert = (!$sql_insert=='') ? $sql_insert : die() ;
+
+              // try to update the requests
+              try {
+
+               $db->qry($sql_insert);
+
+              }
+              catch (MYSQLException $e) {
+
+               throw new Exception("Error insert the results");
+                
+              }
+            
               $recorded_followers = $flag['followers'];
 
               compare($followers,$recorded_followers);

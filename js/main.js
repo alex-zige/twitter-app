@@ -44,7 +44,11 @@
     loadRestfulData: function(api){
 
 			//Set the content pane to a loading screen
-			$("#content-pane").text( "fetching your data..." );
+			  $("#content-pane").Loadingdotdotdot({
+                    "speed": 400,
+                    "maxDots": 5,
+                    "word": "fetching your data"
+                });
 
 			//Load the data in using jQuerys ajax call
 			$.ajax({
@@ -53,7 +57,11 @@
 				dataType: "json",
 				success: function(data){
 
-					//if no errors
+
+				//stop the loading 
+				//setTimeout(function() { ("#content-pane").Loadingdotdotdot("Stop"); }, 5000);
+
+				//if no errors
 				if ( data!== null && data.error_code === undefined){
 
 					if (data!== null && data.success_code === undefined) {
@@ -154,6 +162,14 @@
     	twitter_name = $('#twitter_username').val();
 
 		var restful_put_url = "http://twitter.dev/dev/api/twitter/"+twitter_name;
+
+		//Set the content pane to a loading screen
+			  $("#content-pane").Loadingdotdotdot({
+                    "speed": 400,
+                    "maxDots": 5,
+                    "word": "initialize your storge"
+                });
+
 
 			$.ajax({
 				url: restful_put_url,

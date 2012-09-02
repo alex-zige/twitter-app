@@ -51,21 +51,23 @@
 <div class="body-content">
 <h1>Twitter Unfollowers Search</h1>
 <p>find out your unfollowers in a second.</p>
-<div class="search">
 
-<input id="twitter_username" type="text" placeholder="Search for a full name, or @username" name="q">
+  <div class="search">
 
-<input id="search_submit" class="btn" type="submit" value="Search"> 
-</div>
+  <input id="twitter_username" type="text" placeholder="Search for a full name, or @username" name="q">
+
+  <input id="search_submit" class="btn" type="submit" value="Search"> 
+  </div>
 
 	<div class="result">
 
 	<div id="content-pane"></div>
-
+<!-- 
+  <img src="assets/img/loading.gif" alt="" />
+ -->
 	</div>
 
 <!-- notify the first access -->
-
 <!-- modal blocks -->
     <div class="modal hide fade" id="udpateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
@@ -82,6 +84,20 @@
    </div>
 <!-- modal blocks ends -->
 
+
+
+<!-- a button to update the current status -->
+<script type="text/template" id="tpl-wine-details">
+
+    <div class="update-request">
+     <button id="update" class="btn btn-primary">Update Online Storage</button>
+    </div>
+
+</script>
+<!-- a button to update the current status -->
+
+
+
 <div class="clearfix"></div>
 
 <div class="footer">
@@ -96,7 +112,6 @@
 </div>
 
 <div id="overlay" class="fullpage_background overlay"></div>
-
 <img id="fullpage_background" class="fullpage_background" style="opacity: 0.7; display: hidden;" alt="" src="assets/img/Budapest.jpg">
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
@@ -110,6 +125,8 @@
 
 <script type="text/javascript" src="js/libs/imagesLoaded.js"></script>
 
+<script type="text/javascript" src="js/libs/loadingdotdotdot.js"></script>
+
 <script type="text/javascript" src="js/libs/jquery.backstretch.js"></script>
 
 <script type="text/javascript">
@@ -120,7 +137,6 @@
   $.backstretch($("#fullpage_background").src, {speed: 150});
 
   $("#fullpage_background").hide().imagesLoaded(function(){this.fadeIn('slow')});
-
 
   }
   catch(e){

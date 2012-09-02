@@ -4,6 +4,8 @@ class Twitter {
 
     protected static $db_name = 'twitter';
 
+    protected static $table_name = 'twitter_user';
+
     protected static $base_url = "https://api.twitter.com/1";
 
     protected static $screen_name;
@@ -35,42 +37,31 @@ class Twitter {
         return $db;
     }
 
-    public static function updates($twitter_user = 'galaxy_watcher', $array_values=''){
+    public static function generateUpdateSQL($twitter_user = 'galaxy_watcher', $array_values=''){
+  
+       $element = '';
 
-    //  UPDATE `twitter`.`twitter_user` SET `requests` = '2' WHERE `twitter_user`.`ID` =6;
+       $sql = "UPDATE `".self::$db_name."`.`".self::$table_name."` SET ";
 
-      $array_values = array(
-
-        'requests'=>'2',
-
-        );
-     $element='';
-
-     $sql = "UPDATE `twitter`.`twitter_user` SET";
-
-      if(is_array($array_values)){
+       //only if valid formate.
+      if(is_array($array_values) && $twitter_user!=""){
 
         foreach ($array_values as $key => $value) {
 
          $element .="`".$key."` = '".$value."',";
 
         }
+       //trim the last char commda.
+       $element = rtrim($element,',');
 
-      
-       $element .= rtrim($element,',');
-
-        $sql .=" WHERE `twitter_user`.`ID` =6;";
-
-        echo $sql;
+      $sql .= $element." WHERE `twitter_user`.`username` = '".$twitter_user."';";
 
       }else{
 
-
-
+        $sql =null;
 
       }
-
-
+      return $sql;
 
     }
 
