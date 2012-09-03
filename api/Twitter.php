@@ -33,10 +33,8 @@ class Twitter {
                 $db = DB::open('twitter','localhost','root','');
 
               }
-
         return $db;
     }
-
     public static function generateUpdateSQL($twitter_user = 'galaxy_watcher', $array_values=''){
   
        $element = '';

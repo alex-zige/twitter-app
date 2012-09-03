@@ -4,7 +4,6 @@
 (function ($) {
 
 	var SearchView = Backbone.View.extend({
-
 		el:$('body'),
 		events:{
  		'click input#search_submit': 'check',
@@ -21,9 +20,12 @@
    	    },  
       check: function(){
 
+      	$('#update_container').hide();
+
 	    	twitter_name = $('#twitter_username').val();
 
 	    	var regex_pat_whitespace = /\s/;
+
 
 	    	if( regex_pat_whitespace.test(twitter_name) != true){
 
@@ -41,7 +43,14 @@
 		}
 
    },	
-    loadRestfulData: function(api){
+
+  destroy: function(){
+  this.remove();
+  this.unbind();
+},
+  loadRestfulData: function(api){
+
+  			
 
 			//Set the content pane to a loading screen
 			  $("#content-pane").Loadingdotdotdot({
@@ -50,6 +59,10 @@
                     "word": "fetching your data"
                 });
 
+
+
+
+
 			//Load the data in using jQuerys ajax call
 			$.ajax({
 				url: api,
@@ -57,7 +70,8 @@
 				dataType: "json",
 				success: function(data){
 
-
+		
+ 					
 				//stop the loading 
 				//setTimeout(function() { ("#content-pane").Loadingdotdotdot("Stop"); }, 5000);
 
@@ -66,7 +80,7 @@
 
 					if (data!== null && data.success_code === undefined) {
 					//Once we receive the data, set it to the content pane.
-					$("#content-pane").text( "Your Latest unfollowers are :" );
+					$("#content-pane").text( "Your latest unfollowers are :" );
 
 						var html_wrapper = "<ul>";
 
@@ -74,7 +88,7 @@
 					
 							if(data[i].error == undefined){
 
-							console.log(data[i]);
+							//console.log(data[i]);
 
 							var html = "<li class='unfollowers'>";
 
@@ -103,8 +117,19 @@
 
 							$("#content-pane").append(html);
 
+							//active update view?
+							$('#update_container').fadeIn('slow');
+
+							 this.update_view = new updateView();
+
+						     this.update_view.parentView = this;
+
+						     $(this.el).append(this.update_view.el);
+
+
 						}
 
+							
 					}else if(data.success_code !== null && data.success_code == 101){
 
 						var html="You are lucky, you have no unfollowers these between your lastest check.";
@@ -142,22 +167,7 @@
 
 			});	
 		},
-
-		update:function(){
-		//get the twitter name
-    	twitter_name = $('#twitter_username').val();
-
-		var restful_put_url = "http://twitter.dev/dev/api/twitter/".twitter_name;
-			$.ajax({
-				url: restful_put_url,
-				type:'put',
-				dataType: "json",
-				success: function(data){
-				console.log(data);
-				}	
-
-			});
- 		},
+	
  		init:function(){
     	twitter_name = $('#twitter_username').val();
 
@@ -169,7 +179,6 @@
                     "maxDots": 5,
                     "word": "initialize your storge"
                 });
-
 
 			$.ajax({
 				url: restful_put_url,
@@ -202,5 +211,9 @@
  	});
 	
 	//init the app
- 	var SearchView = new SearchView();      
+ 	var SearchView = new SearchView();     
+
+
+ 	 
+
 })(jQuery);

@@ -40,6 +40,8 @@ $app->post('/twitter/:twitter_name', 'createNewAccount');
 
       $raw_sql_update = "Update `twitter_user` SET `followers` = ".$followers." WHERE username =".$twitter_name;
    
+      $db->qry($raw_sql_update);
+      
       echo json_encode(array('success_code'=>'202'));
 
       }else{

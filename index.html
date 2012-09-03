@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-
 	<title>Find Your Twitter Unfollowers</title>
 
-</head>
 
 <!-- bootstrap head elements -->
   <meta charset='utf-8'>
@@ -24,7 +22,7 @@
     <!-- Le fav and touch icons -->
     <link rel="shortcut icon" href="assets/ico/favicon.ico">
     <link href="css/style.css" rel="stylesheet">
-    
+</head>
 <body>
 
 <div class="topbar js-topbar">
@@ -62,9 +60,11 @@
 	<div class="result">
 
 	<div id="content-pane"></div>
-<!-- 
-  <img src="assets/img/loading.gif" alt="" />
- -->
+
+  <div id="update_container">
+
+  </div>
+
 	</div>
 
 <!-- notify the first access -->
@@ -84,28 +84,27 @@
    </div>
 <!-- modal blocks ends -->
 
-
-
 <!-- a button to update the current status -->
-<script type="text/template" id="tpl-wine-details">
-
+<script type="text/template" id="tpl-update-panel">
     <div class="update-request">
-     <button id="update" class="btn btn-primary">Update Online Storage</button>
+
+     <button id="update" class="btn btn-primary">Sync Online Storage with Current followers</button>
+
+     <a data-content="And here's some amazing content. It's very engaging. right?" rel="popover" href="#" data-original-title="A Title" class="whatsit">?whats this</a>
+
     </div>
 
 </script>
 <!-- a button to update the current status -->
 
 
-
 <div class="clearfix"></div>
 
 <div class="footer">
   <ul class="links"> 
-  <li class="first">&copy 2012 NovaInspire</li>
-  <li><a href="http://www.novainspire.com" target="_blank">About us</a></li>
-  <li><a href="help">Help</a></li>
-  <li><a href="contact">Contact</a></li>
+  <li class="first">&copy Brought to you by <a href="http://www.novainspire.com" target="_blank"></a>NovaInspire</li>
+  <li><a href="http://www.novainspire.com" target="_blank">About</a></li>
+  <li><a href="mailto:alex.zige@gmail.com">Contact</a></li>
   </ul>
 </div>
 
@@ -119,6 +118,8 @@
 <script src="http://ajax.cdnjs.com/ajax/libs/backbone.js/0.3.3/backbone-min.js"></script>
 <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/libs/bootbox.js"></script>
+
+<script type="text/javascript" src="js/update.js"></script>
 
 <!-- main js file controlls the view  -->
 <script type="text/javascript" src="js/main.js"></script>
@@ -137,6 +138,9 @@
   $.backstretch($("#fullpage_background").src, {speed: 150});
 
   $("#fullpage_background").hide().imagesLoaded(function(){this.fadeIn('slow')});
+
+    //binding the popover events.
+  $("#whatsit").popover();
 
   }
   catch(e){

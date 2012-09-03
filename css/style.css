@@ -395,6 +395,19 @@ p a {
   color: #fff;
 }
 
+.whatsit{
+    text-decoration: none;
+    color: #084482;
+    font-size: 0.7em;
+    margin-left: 5px;
+
+}
+.whatsit:hover{
+  text-decoration: none !important;
+  border-bottom: dashed 1px #fff;
+
+}
+
 
 /* 404 search form */
 .search {
