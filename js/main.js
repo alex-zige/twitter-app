@@ -172,7 +172,6 @@
     	twitter_name = $('#twitter_username').val();
 
 		var restful_put_url = "http://twitter.dev/dev/api/twitter/"+twitter_name;
-
 		//Set the content pane to a loading screen
 			  $("#content-pane").Loadingdotdotdot({
                     "speed": 400,

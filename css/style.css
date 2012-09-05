@@ -176,7 +176,7 @@ float: left;
 }
 .username{
     font-weight: lighter;
-    color: #999999;
+    color: #0084B4;
     font-size: 12px;
 }
 .bio{
@@ -397,18 +397,29 @@ p a {
 
 .whatsit{
     text-decoration: none;
-    color: #084482;
+    color: #fff;
     font-size: 0.7em;
+    font-weight: lighter;
     margin-left: 5px;
 
 }
 .whatsit:hover{
+  color: #fff;
   text-decoration: none !important;
   border-bottom: dashed 1px #fff;
 
 }
+.popover-content {
+padding: 2px 7px;
 
+}
+.popover-content p{
 
+color: #000;
+font-size: 1.0em;
+text-align: left;
+
+}
 /* 404 search form */
 .search {
   margin-bottom: 20px;

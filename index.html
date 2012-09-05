@@ -88,9 +88,9 @@
 <script type="text/template" id="tpl-update-panel">
     <div class="update-request">
 
-     <button id="update" class="btn btn-primary">Sync Online Storage with Current followers</button>
+     <button id="update" class="btn btn-primary">Sync with Current followers</button>
 
-     <a data-content="And here's some amazing content. It's very engaging. right?" rel="popover" href="#" data-original-title="A Title" class="whatsit">?whats this</a>
+     <a data-content="For doing this, it will simply set the currently followers list as a benchmark. Your next followers comparision will be based on this updated records." data-placement='bottom' rel="popover" href="#" data-original-title="update followers to server" class="whatsit" id="whatsit">?whats this</a>
 
     </div>
 
@@ -102,7 +102,7 @@
 
 <div class="footer">
   <ul class="links"> 
-  <li class="first">&copy Brought to you by <a href="http://www.novainspire.com" target="_blank"></a>NovaInspire</li>
+  <li class="first">&copy Brought to you by <a href="http://www.novainspire.com" target="_blank">NovaInspire</a></li>
   <li><a href="http://www.novainspire.com" target="_blank">About</a></li>
   <li><a href="mailto:alex.zige@gmail.com">Contact</a></li>
   </ul>
@@ -119,6 +119,7 @@
 <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/libs/bootbox.js"></script>
 
+<!-- view js file controlls for update view  -->
 <script type="text/javascript" src="js/update.js"></script>
 
 <!-- main js file controlls the view  -->
@@ -132,6 +133,8 @@
 
 <script type="text/javascript">
 
+(function ($) {
+ 
   //fadein in action when image is loaded completely
  try{
 
@@ -139,13 +142,23 @@
 
   $("#fullpage_background").hide().imagesLoaded(function(){this.fadeIn('slow')});
 
-    //binding the popover events.
-  $("#whatsit").popover();
+  //binding the popover events.
+  $("#whatsit").click(function(e){
+
+    alert('cool');
+    return false;
+
+  });
 
   }
   catch(e){
 
   };
+
+
+});
+
+
 
 </script>
 
