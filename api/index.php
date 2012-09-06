@@ -128,15 +128,8 @@ $app->get('/twitter/:twitter_name', 'getFollowers');
 function createNewAccount($twitter_name){
 
 
-       if(strpos($_SERVER['DOCUMENT_ROOT'], 'alex') != false){
-                //query the string 
-                $db = DB::open('twitter','localhost','root','root');
-
-              }else{
-       
-                $db = DB::open('twitter','localhost','root','');
-
-         }
+     //open up custom twitter DB
+      $db = Twitter::customDB();
 
       $result = Twitter::getFollowersbyScreenName($twitter_name);
 
@@ -152,7 +145,7 @@ function createNewAccount($twitter_name){
         $db->qry($raw_sql_insert);   
 
       //cannot init new users
-     echo json_encode(array('success_code'=>'200'));
+      echo json_encode(array('success_code'=>'200'));
 
       }else{
 
