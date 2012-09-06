@@ -42,11 +42,11 @@ $app->post('/twitter/:twitter_name', 'createNewAccount');
 
       $today = date('Y-m-d');
 
-      $raw_sql_update = "Update `twitter_user` SET `followers` = `".$followers."`,`fetchdate` = `".$today."`  WHERE username =".$twitter_name;
-   
-      //echo $raw_sql_update;
+      $raw_sql_update = "UPDATE `twitter`.`twitter_user` SET `followers` = '".$followers."', `fetchdate` = '".$today."' WHERE `twitter_user`.`username` = '".$twitter_name."'";
+  
+     // echo $raw_sql_update;
 
-      //$db->qry($raw_sql_update);
+      $db->qry($raw_sql_update);
       
       echo json_encode(array('success_code'=>'202'));
 

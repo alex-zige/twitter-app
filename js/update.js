@@ -25,9 +25,9 @@ updateView = Backbone.View.extend({
 	update:function(){
 		//get the twitter name
     	twitter_name = $('#twitter_username').val();
-
  
-		var restful_put_url = sAPIurl.twitter_name;
+		var restful_put_url = sAPIurl+twitter_name;
+
 
 			$.ajax({
 				url: restful_put_url,
