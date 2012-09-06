@@ -1,3 +1,6 @@
+
+var sAPIurl = location.href+'api/twitter/';
+
 updateView = Backbone.View.extend({
    
    el: $('#update_container'),
@@ -23,7 +26,8 @@ updateView = Backbone.View.extend({
 		//get the twitter name
     	twitter_name = $('#twitter_username').val();
 
-		var restful_put_url = "http://twitter.dev/dev/api/twitter/"+twitter_name;
+ 
+		var restful_put_url = sAPIurl.twitter_name;
 
 			$.ajax({
 				url: restful_put_url,

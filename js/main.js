@@ -3,6 +3,10 @@
 */
 (function ($) {
 
+	 //set up global api url
+	 var sAPIurl = location.href+'api/twitter/';
+
+
 	var SearchView = Backbone.View.extend({
 		el:$('body'),
 		events:{
@@ -31,7 +35,7 @@
 
 		    	if(twitter_name != ""){
 					//passing value to controller;
-					this.loadRestfulData("http://twitter.dev/dev/api/twitter/"+twitter_name);
+					this.loadRestfulData(sAPIurl+twitter_name);
 					
 				}else{
 					bootbox.alert("Please insert your twitter user name!");
@@ -171,7 +175,8 @@
  		init:function(){
     	twitter_name = $('#twitter_username').val();
 
-		var restful_put_url = "http://twitter.dev/dev/api/twitter/"+twitter_name;
+
+		var restful_put_url = sAPIurl+twitter_name;
 		//Set the content pane to a loading screen
 			  $("#content-pane").Loadingdotdotdot({
                     "speed": 400,
