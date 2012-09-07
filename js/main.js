@@ -136,7 +136,7 @@
 							
 					}else if(data.success_code !== null && data.success_code == 101){
 
-						var html="You are lucky, you have no unfollowers these between your lastest check.";
+						var html="You are lucky, you have no new unfollowers from your lastest check.";
 
 						$("#content-pane").text(html);
 
