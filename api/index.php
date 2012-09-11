@@ -45,7 +45,6 @@ $app->post('/twitter/:twitter_name', 'createNewAccount');
       $raw_sql_update = "UPDATE `twitter`.`twitter_user` SET `followers` = '".$followers."', `fetchdate` = '".$today."' WHERE `twitter_user`.`username` = '".$twitter_name."'";
   
      // echo $raw_sql_update;
-
       $db->qry($raw_sql_update);
       
       echo json_encode(array('success_code'=>'202'));
@@ -98,8 +97,15 @@ $app->get('/twitter/:twitter_name', 'getFollowers');
               // try to update the requests
               try {
 
-               $db->qry($sql_insert);
+              $db->qry($sql_insert);
 
+              $today = date('Y-m-d');
+
+              $raw_sql_update = "UPDATE `twitter`.`twitter_user` SET `followers` = '".$followers."', `fetchdate` = '".$today."' WHERE `twitter_user`.`username` = '".$twitter_name."'";
+  
+              // echo $raw_sql_update;
+              $db->qry($raw_sql_update);
+      
               }
               catch (MYSQLException $e) {
 
@@ -110,6 +116,9 @@ $app->get('/twitter/:twitter_name', 'getFollowers');
               $recorded_followers = $flag['followers'];
 
              compare($followers,$recorded_followers);
+
+             
+
 
             }else{
     
