@@ -103,7 +103,7 @@ $app->get('/twitter/:twitter_name', 'getFollowers');
             
               $recorded_followers = $flag['followers'];
 
-              compare($followers,$recorded_followers);
+             compare($followers,$recorded_followers);
 
             }else{
     
@@ -117,7 +117,6 @@ $app->get('/twitter/:twitter_name', 'getFollowers');
            echo json_encode(array('error_code'=>'404'));
     }
  }
-
 
 /**
  * createNewAccount 
@@ -173,18 +172,20 @@ function compare($new,$old){
 
     $array_old = json_decode($old);
                          
-    $unfollowers_ids = array_diff($array_old, $array_new);
+    $unfollowers_ids = array_diff($array_old,$array_new);
+
+   // var_dump($unfollowers_ids);
 
     if(!empty($unfollowers_ids))
     {
         //value has point of differents
        $unfollowers = getUnfollowersProfile($unfollowers_ids);
 
-      echo json_encode($unfollowers);
-
+    echo json_encode($unfollowers);
+    
     }else{
 
-      echo json_encode(array('success_code'=>'101'));
+    echo json_encode(array('success_code'=>'101'));
 
     }
     //finding out what's missing in new.
