@@ -84,7 +84,7 @@
 
 					if (data!== null && data.success_code === undefined) {
 					//Once we receive the data, set it to the content pane.
-					$("#content-pane").text( "Your latest unfollowers are :" );
+					$("#content-pane").text( "Your latest unfollows are :" );
 
 						var html_wrapper = "<ul>";
 
@@ -136,7 +136,7 @@
 							
 					}else if(data.success_code !== null && data.success_code == 101){
 
-						var html="You are lucky, you have no unfollowers these between your lastest check.";
+						var html="You are lucky, you have no new unfollows since your lastest check :)";
 
 						$("#content-pane").text(html);
 
@@ -175,8 +175,8 @@
  		init:function(){
     	twitter_name = $('#twitter_username').val();
 
-		var restful_put_url = sAPIurl+twitter_name;
 
+		var restful_put_url = sAPIurl+twitter_name;
 		//Set the content pane to a loading screen
 			  $("#content-pane").Loadingdotdotdot({
                     "speed": 400,
@@ -195,7 +195,7 @@
 					$("#udpateModal").modal('hide');
 					
 					//notify the content message
-					$("#content-pane").html("Congratulation, your account storge has been initialized.<br/><br/>Come back later to find out who's the evil unfollowers!");
+					$("#content-pane").html("Congratulation, your account storge has been initialized.<br/><br/>Come back later to find out who's the evil unfollows!");
 					
 					}else{
 

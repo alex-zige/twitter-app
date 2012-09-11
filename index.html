@@ -3,7 +3,6 @@
 <head>
 	<title>Find Your Twitter Unfollowers</title>
 
-
 <!-- bootstrap head elements -->
   <meta charset='utf-8'>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,7 +37,7 @@
             </ul>
             <div class="pull-right">
               <ul class="nav secondary-nav">
-                <li><a href="https://github.com/alex-zige/twitter-app" id="homeLink">Github</a></li>
+                <li><a href="https://twitter.com/intent/tweet?source=webclient&text=DM @Galaxy_Watcher new bugs: your discover goes here!" id="homeLink">found a bug?</a></li>
               </ul>
             </div>
           </div>
@@ -47,12 +46,12 @@
 </div>
 
 <div class="body-content">
-<h1>Twitter Unfollowers Search</h1>
+<h1>Twitter Unfollowers Search <span style='font-size:0.4em;'>Beta</span></h1>
 <p>find out your unfollowers in a second.</p>
 
   <div class="search">
 
-  <input id="twitter_username" type="text" placeholder="Search for a full name, or @username" name="q">
+  <input id="twitter_username" type="text" placeholder="Search for a twitter username" name="q">
 
   <input id="search_submit" class="btn" type="submit" value="Search"> 
   </div>
@@ -88,9 +87,9 @@
 <script type="text/template" id="tpl-update-panel">
     <div class="update-request">
 
-     <button id="update" class="btn btn-primary">Sync Online Storage with Current followers</button>
+     <button id="update" class="btn btn-primary">Sync with Current followers</button>
 
-     <a data-content="And here's some amazing content. It's very engaging. right?" rel="popover" href="#" data-original-title="A Title" class="whatsit">?whats this</a>
+     <a data-content="For doing this, it will simply set the currently followers list as a benchmark. Your next followers comparision will be based on this updated records." data-placement='bottom' rel="popover" href="#" data-original-title="update followers to server" class="whatsit" id="whatsit">?whats this</a>
 
     </div>
 
@@ -102,7 +101,7 @@
 
 <div class="footer">
   <ul class="links"> 
-  <li class="first">&copy Brought to you by <a href="http://www.novainspire.com" target="_blank"></a>NovaInspire</li>
+  <li class="first">&copy Brought to you by <a href="http://www.novainspire.com" target="_blank">NovaInspire</a></li>
   <li><a href="http://www.novainspire.com" target="_blank">About</a></li>
   <li><a href="mailto:alex.zige@gmail.com">Contact</a></li>
   </ul>
@@ -111,7 +110,7 @@
 </div>
 
 <div id="overlay" class="fullpage_background overlay"></div>
-<img id="fullpage_background" class="fullpage_background" style="opacity: 0.7; display: hidden;" alt="" src="assets/img/Budapest.jpg">
+<img id="fullpage_background" class="fullpage_background" style="opacity: 0.7; display: hidden;" alt="" src="assets/img/bg-nz.jpg">
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script src="http://ajax.cdnjs.com/ajax/libs/underscore.js/1.1.4/underscore-min.js"></script>
@@ -119,6 +118,7 @@
 <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/libs/bootbox.js"></script>
 
+<!-- view js file controlls for update view  -->
 <script type="text/javascript" src="js/update.js"></script>
 
 <!-- main js file controlls the view  -->
@@ -132,6 +132,8 @@
 
 <script type="text/javascript">
 
+(function ($) {
+ 
   //fadein in action when image is loaded completely
  try{
 
@@ -139,13 +141,23 @@
 
   $("#fullpage_background").hide().imagesLoaded(function(){this.fadeIn('slow')});
 
-    //binding the popover events.
-  $("#whatsit").popover();
+  //binding the popover events.
+  $("#whatsit").click(function(e){
+
+    alert('cool');
+    return false;
+
+  });
 
   }
   catch(e){
 
   };
+
+
+});
+
+
 
 </script>
 
